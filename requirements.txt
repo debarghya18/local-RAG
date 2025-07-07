@@ -23,3 +23,8 @@ tiktoken==0.4.0
 huggingface-hub
 # uncomment to use instructor embeddings
 InstructorEmbedding==1.0.1
+flask
+flask-sqlalchemy
+psycopg2
+email_validator
+gunicorn
