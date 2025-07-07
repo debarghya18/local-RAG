@@ -30,6 +30,20 @@
 .message-content {
     max-width: 80%;
     word-wrap: break-word;
+    line-height: 1.5;
+}
+
+.message-text {
+    white-space: pre-line;
+}
+
+.message-text strong {
+    font-weight: 600;
+    color: var(--bs-body-color);
+}
+
+.assistant-message .message-text strong {
+    color: var(--bs-light);
 }
 
 .user-message .message-content {

@@ -49,7 +49,7 @@ os.makedirs(EMBEDDINGS_FOLDER, exist_ok=True)
 db.init_app(app)
 
 # Import models and RAG engine
-from main import Document, ChatSession, ChatMessage
+from models import Document, ChatSession, ChatMessage
 from rag_engine import RAGEngine
 
 # Initialize RAG engine
@@ -67,47 +67,61 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     """Handle PDF file upload and processing."""
-    if 'file' not in request.files:
-        flash('No file selected', 'error')
+    if 'files' not in request.files:
+        flash('No files selected', 'error')
         return redirect(url_for('index'))
     
-    file = request.files['file']
-    if file.filename == '':
-        flash('No file selected', 'error')
+    files = request.files.getlist('files')
+    if not files or all(file.filename == '' for file in files):
+        flash('No files selected', 'error')
         return redirect(url_for('index'))
     
-    if file and allowed_file(file.filename):
-        try:
-            # Generate unique filename
-            filename = secure_filename(file.filename)
-            unique_id = str(uuid.uuid4())
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{unique_id}_{filename}")
+    uploaded_count = 0
+    error_count = 0
+    
+    for file in files:
+        if file.filename == '':
+            continue
             
-            # Save file
-            file.save(file_path)
-            
-            # Create document record
-            document = Document(
-                id=unique_id,
-                filename=filename,
-                original_filename=file.filename,
-                file_path=file_path,
-                upload_date=datetime.utcnow(),
-                status='uploaded'
-            )
-            db.session.add(document)
-            db.session.commit()
-            
-            # Start processing in background
-            threading.Thread(target=process_document_async, args=(unique_id,)).start()
-            
-            flash('File uploaded successfully! Processing in background...', 'success')
-            
-        except Exception as e:
-            logger.error(f"Error uploading file: {str(e)}")
-            flash(f'Error uploading file: {str(e)}', 'error')
-    else:
-        flash('Invalid file type. Please upload a PDF file.', 'error')
+        if file and allowed_file(file.filename):
+            try:
+                # Generate unique filename
+                filename = secure_filename(file.filename)
+                unique_id = str(uuid.uuid4())
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{unique_id}_{filename}")
+                
+                # Save file
+                file.save(file_path)
+                
+                # Create document record
+                document = Document(
+                    id=unique_id,
+                    filename=filename,
+                    original_filename=file.filename,
+                    file_path=file_path,
+                    upload_date=datetime.utcnow(),
+                    status='uploaded'
+                )
+                db.session.add(document)
+                db.session.commit()
+                
+                # Start processing in background
+                threading.Thread(target=process_document_async, args=(unique_id,)).start()
+                
+                uploaded_count += 1
+                
+            except Exception as e:
+                logger.error(f"Error uploading file {file.filename}: {str(e)}")
+                error_count += 1
+        else:
+            logger.warning(f"Invalid file type: {file.filename}")
+            error_count += 1
+    
+    if uploaded_count > 0:
+        flash(f'{uploaded_count} file(s) uploaded successfully! Processing in background...', 'success')
+    
+    if error_count > 0:
+        flash(f'{error_count} file(s) failed to upload. Please check file types and sizes.', 'warning')
     
     return redirect(url_for('index'))
 

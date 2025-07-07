@@ -140,21 +140,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
+            const files = Array.from(e.target.files);
+            let hasErrors = false;
+            
+            for (const file of files) {
                 // Check file size (16MB limit)
                 if (file.size > 16 * 1024 * 1024) {
-                    alert('File size must be less than 16MB');
-                    e.target.value = '';
-                    return;
+                    alert(`File "${file.name}" is too large. Maximum size is 16MB.`);
+                    hasErrors = true;
+                    break;
                 }
                 
                 // Check file type
                 if (!file.type.includes('pdf') && !file.name.toLowerCase().endsWith('.pdf')) {
-                    alert('Please select a PDF file');
-                    e.target.value = '';
-                    return;
+                    alert(`File "${file.name}" is not a PDF. Please select only PDF files.`);
+                    hasErrors = true;
+                    break;
                 }
+            }
+            
+            if (hasErrors) {
+                e.target.value = '';
+                return;
+            }
+            
+            // Update form text to show number of files selected
+            const formText = e.target.parentNode.querySelector('.form-text');
+            if (files.length > 1) {
+                formText.innerHTML = `<i class="fas fa-info-circle me-1"></i>${files.length} PDF files selected. All will be processed for chat.`;
+            } else if (files.length === 1) {
+                formText.innerHTML = `<i class="fas fa-info-circle me-1"></i>1 PDF file selected. It will be processed for chat.`;
             }
         });
     }
