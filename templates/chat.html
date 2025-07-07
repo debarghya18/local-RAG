@@ -77,7 +77,7 @@
                                     <div class="message mb-3 {{ 'user-message' if message.is_user else 'assistant-message' }}">
                                         <div class="d-flex {{ 'justify-content-end' if message.is_user else 'justify-content-start' }}">
                                             <div class="message-content {{ 'bg-primary text-white' if message.is_user else 'bg-secondary' }} rounded p-3" style="max-width: 80%;">
-                                                <div class="message-text">{{ message.message }}</div>
+                                                <div class="message-text">{{ message.message | safe | replace('\n', '<br>') }}</div>
                                                 <div class="message-time text-muted small mt-2">
                                                     {{ message.timestamp.strftime('%H:%M') }}
                                                 </div>
@@ -211,7 +211,7 @@
             messageDiv.innerHTML = `
                 <div class="d-flex ${isUser ? 'justify-content-end' : 'justify-content-start'}">
                     <div class="message-content ${isUser ? 'bg-primary text-white' : 'bg-secondary'} rounded p-3" style="max-width: 80%;">
-                        <div class="message-text">${message}</div>
+                        <div class="message-text">${message.replace(/\n/g, '<br>')}</div>
                         <div class="message-time text-muted small mt-2">${timeString}</div>
                         ${sourcesHtml}
                     </div>

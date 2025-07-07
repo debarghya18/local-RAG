@@ -62,10 +62,10 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="mb-3">
-                                        <input type="file" class="form-control" name="file" accept=".pdf" required>
+                                        <input type="file" class="form-control" name="files" accept=".pdf" multiple required>
                                         <div class="form-text">
                                             <i class="fas fa-info-circle me-1"></i>
-                                            Select a PDF file (max 16MB). The document will be processed for chat.
+                                            Select one or more PDF files (max 16MB each). All documents will be processed for chat.
                                         </div>
                                     </div>
                                 </div>
@@ -216,6 +216,12 @@
                                     <small class="text-muted">Natural conversation with your documents using local AI models.</small>
                                 </div>
                             </div>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Setup Required:</strong> To use the full AI capabilities, you need to install the required dependencies. 
+                            Check the "Models Status" to see which packages are missing and install them using: 
+                            <code>pip install sentence-transformers transformers torch scikit-learn PyMuPDF tqdm numpy</code>
                         </div>
                     </div>
                 </div>
