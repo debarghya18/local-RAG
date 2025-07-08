@@ -8,7 +8,7 @@ class Document(db.Model):
     filename = db.Column(db.String(255), nullable=False)
     original_filename = db.Column(db.String(255), nullable=False)
     file_path = db.Column(db.String(500), nullable=False)
-    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    upload_date = db.Column(db.DateTime, default=datetime)
     status = db.Column(db.String(20), default='uploaded')  # uploaded, processing, ready, error
     page_count = db.Column(db.Integer)
     chunk_count = db.Column(db.Integer)
