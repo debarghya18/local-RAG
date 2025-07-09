@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 User = get_user_model()
 
 class RAGPipeline:
-    def __init__(self, user: User):
+    def __init__(self, user):
         self.user = user
         self.embedding_service = EmbeddingService()
         self.config = self._get_user_config()
@@ -166,12 +166,12 @@ This information is compiled from {len(context_chunks)} relevant sections across
 
 class RAGService:
     @staticmethod
-    def get_user_sessions(user: User) -> List[RAGSession]:
+    def get_user_sessions(user) -> List[RAGSession]:
         """Get all RAG sessions for a user"""
         return RAGSession.objects.filter(user=user)
     
     @staticmethod
-    def get_session_by_id(session_id: str, user: User) -> Optional[RAGSession]:
+    def get_session_by_id(session_id: str, user) -> Optional[RAGSession]:
         """Get RAG session by ID"""
         try:
             return RAGSession.objects.get(id=session_id, user=user)
@@ -179,7 +179,7 @@ class RAGService:
             return None
     
     @staticmethod
-    def delete_session(session_id: str, user: User) -> bool:
+    def delete_session(session_id: str, user) -> bool:
         """Delete RAG session"""
         try:
             session = RAGSession.objects.get(id=session_id, user=user)
