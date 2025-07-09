@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/**/*.py": {
+      "runtime": "python3.12",
+      "installCommand": "python3.12 -m pip install --upgrade pip setuptools wheel && pip3.12 install --disable-pip-version-check --upgrade -r requirements.txt"
+    }
+  }
+}
