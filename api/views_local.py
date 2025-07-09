@@ -13,7 +13,7 @@ from documents.models import Document
 from documents.processors import DocumentValidator
 from documents.tasks_local import process_document_sync
 from rag.models import RAGSession, RAGQuery
-from rag.pipeline import RAGPipeline, RAGService
+from rag.pipelines import RAGPipeline, RAGService
 from .serializers import (
     DocumentSerializer, RAGSessionSerializer, RAGQuerySerializer,
     DocumentUploadSerializer, DocumentChunkSerializer

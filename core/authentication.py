@@ -38,7 +38,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         
         return (user, token)
 
-def generate_jwt_token(user: User) -> str:
+def generate_jwt_token(user) -> str:
     payload = {
         'user_id': str(user.id),
         'email': user.email,
