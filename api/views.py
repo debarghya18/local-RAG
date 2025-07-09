@@ -15,6 +15,8 @@ from .serializers import (
     DocumentSerializer, RAGSessionSerializer, RAGQuerySerializer,
     DocumentUploadSerializer
 )
+import datetime
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 User = get_user_model()

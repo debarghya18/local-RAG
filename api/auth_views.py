@@ -1,7 +1,7 @@
-from django import status
-from django.views import APIView
-from django.response import Response
-from djangorestframework.permissions import IsAuthenticated, AllowAny
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError

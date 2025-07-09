@@ -3,12 +3,13 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import authentication, exceptions
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Any
+
 
 User = get_user_model()
 
 class JWTAuthentication(authentication.BaseAuthentication):
-    def authenticate(self, request) -> Optional[Tuple[User, str]]:
+    def authenticate(self, request) -> Optional[tuple[Any, str]]:
         auth_header = request.META.get('HTTP_AUTHORIZATION')
         if not auth_header:
             return None
