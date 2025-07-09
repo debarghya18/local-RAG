@@ -1,3 +1,4 @@
+--only-binary=:all:
 # Core Framework
 Django==4.2.7
 streamlit==1.28.2
